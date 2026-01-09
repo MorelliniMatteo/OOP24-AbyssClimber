@@ -1,0 +1,52 @@
+package it.unibo.abyssclimber.model;
+
+enum Class {
+    CAVALIERE("Knight", 250, 20, 1, 25, 15, 20, 1.5),
+    MAGO("Mage", 250, 1, 20, 15, 25, 20, 1.5),
+    SOLDATO("Soldier", 300, 15, 15, 20, 20, 25, 1.5);
+
+    private final String name;
+    private final int cHP;
+    private final int cATK;
+    private final int cMATK;
+    private final int cDEF;
+    private final int cMDEF;
+    private final int cCrit;
+    private final double cCritDMG;
+
+    Class(String name, int hp, int atk, int matk, int def, int mdef, int crit, double critdmg) {
+        this.name = name;
+        this.cHP = hp;
+        this.cATK = atk;
+        this.cMATK = matk;
+        this.cDEF = def;
+        this.cMDEF = mdef;
+        this.cCrit = crit;
+        this.cCritDMG = critdmg;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public int getcHP() {
+        return cHP;
+    }
+    public int getcATK() {
+        return cATK;
+    }
+    public int getcMATK() {
+        return cMATK;
+    }
+    public int getcDEF() {
+        return cDEF;
+    }
+    public int getcMDEF() {
+        return cMDEF;
+    }
+    public int getcCrit() {
+        return cCrit;
+    }
+    public double getcCritDMG() {
+        return cCritDMG;
+    }
+}
