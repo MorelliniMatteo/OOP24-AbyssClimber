@@ -61,7 +61,7 @@ public class ShopController {
     @FXML
     public void onBackClicked() {
         // torna indietro alla selezione stanze
-        SceneRouter.goTo(SceneId.ROOM_SELECTION);
+        SceneRouter.goTo(SceneId.SHOP_ROOM);
     }
 
     // al click del corrispettivo in shop.fxml, @FXML lo collega a questo metodo. La stessa cosa vale per gli altri 3 sotto

@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
+//TODO: in shop_room.fxml bisogna ancora spostare i bottoni al posto giusto, si attende programma completo 
 public class ShopRoomController {
 
     @FXML private Label titleLabel;
@@ -25,13 +26,18 @@ public class ShopRoomController {
 
         RoomOption opt = RoomContext.get().getLastChosen();
         if (opt != null) {
-            titleLabel.setText("Negozio");
+            titleLabel.setText("Mercante");
             descLabel.setText(opt.description());
         }
     }
 
     @FXML
-    private void onContinue() {
+    private void onEnterShop() {
+        SceneRouter.goTo(SceneId.SHOP); 
+    }
+
+    @FXML
+    private void onBackToMap() {
         SceneRouter.goTo(SceneId.ROOM_SELECTION);
     }
 }

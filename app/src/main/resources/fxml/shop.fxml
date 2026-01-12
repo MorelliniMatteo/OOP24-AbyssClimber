@@ -46,7 +46,7 @@
         <Label fx:id="shopSlot4Price" text="" styleClass="stat-secondary"/>
     </VBox>
 
-    <Button text="TORNA INDIETRO" 
+    <Button text="TORNA ALLA SCHERMATA DI NEGOZIO" 
             onAction="#onBackClicked" 
             GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" 
             GridPane.halignment="CENTER"
