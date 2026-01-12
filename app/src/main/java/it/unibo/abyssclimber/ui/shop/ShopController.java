@@ -8,14 +8,15 @@ import it.unibo.abyssclimber.core.SceneRouter;
 import it.unibo.abyssclimber.core.GameCatalog;
 import it.unibo.abyssclimber.core.GameState;
 import it.unibo.abyssclimber.core.SceneId;
-// import it.unibo.abyssclimber.model.Player;
 
 import java.util.List;
 import java.util.ArrayList;
 
 public class ShopController {
 
-    // Riferimenti FXML (già li avevi)
+    // Fa da segnaposto, il file fxml viene letto, trova label con id specifico, cerca in questo file qualcosa con lo stesso nome, 
+    // in questo caso sono le variabili e inserisce la Label creata dal file grafico dentro la variabile Java
+    // sono 4 perché ho 4 slot + 1 label per l'oro del player
     @FXML
     private Label shopSlot1Name, shopSlot1Stats, shopSlot1Price;
     @FXML
@@ -24,42 +25,47 @@ public class ShopController {
     private Label shopSlot3Name, shopSlot3Stats, shopSlot3Price;
     @FXML
     private Label shopSlot4Name, shopSlot4Stats, shopSlot4Price;
+    @FXML 
+    private Label playerGoldLabel;
 
-    // MEMORIA: Ci serve per sapere quale oggetto corrisponde a quale slot quando
-    // clicchi
+    //items che sono in vendita nel negozio, vuoto al momento
     private List<Item> itemsInShop = new ArrayList<>();
 
     @FXML
     public void initialize() {
-        // 1. Chiediamo direttamente al catalogo gli oggetti del negozio
+        // items é uguale agli oggetti in vendita nel negozio presi dal GameCatalog
         List<Item> items = GameCatalog.getShopItems();
 
-        // 2. Aggiorniamo la grafica
+        // aggiorniamo la grafica
         updateShopUI(items);
+
+        //mostro l'oro se il player esiste
+        if (GameState.get().getPlayer() != null) {
+        playerGoldLabel.setText("Oro: " + GameState.get().getPlayer().getGold());
+    }
     }
 
-    /**
-     * Inizializza il negozio con gli oggetti
+    /*
+        *Inizializza il negozio con gli oggetti
      */
     public void updateShopUI(List<Item> shopItems) {
-        this.itemsInShop = shopItems; // Salviamo la lista in memoria!
+        this.itemsInShop = new ArrayList<>(shopItems); // copia locale per gestione click, cosí gli indici rimangono corretti anche quando si effettua un acquisto
 
-        updateSingleShopSlot(shopSlot1Name, shopSlot1Stats, shopSlot1Price, getItemSafe(0));
+        //passandoci le variabili dichiarate sopra, succede quello che ho scritto nel primo commento di questo file e le mostra cosí nella grafica
+        updateSingleShopSlot(shopSlot1Name, shopSlot1Stats, shopSlot1Price, getItemSafe(0)); //riempo ogni slot con l'oggetto corrispondente
         updateSingleShopSlot(shopSlot2Name, shopSlot2Stats, shopSlot2Price, getItemSafe(1));
         updateSingleShopSlot(shopSlot3Name, shopSlot3Stats, shopSlot3Price, getItemSafe(2));
         updateSingleShopSlot(shopSlot4Name, shopSlot4Stats, shopSlot4Price, getItemSafe(3));
     }
 
-    // --- PUNTO 3: Tasto Indietro ---
     @FXML
     public void onBackClicked() {
-        // Torna alla mappa o al menu (decidi tu dove)
+        // torna indietro alla selezione stanze
         SceneRouter.goTo(SceneId.ROOM_SELECTION);
     }
 
-    // --- PUNTO 2: Gestione Click (Acquisto) ---
-
-    @FXML
+    // al click del corrispettivo in shop.fxml, @FXML lo collega a questo metodo. La stessa cosa vale per gli altri 3 sotto
+    @FXML 
     public void onSlot1Clicked() {
         tryBuy(0, shopSlot1Name, shopSlot1Price);
     }
@@ -79,77 +85,61 @@ public class ShopController {
         tryBuy(3, shopSlot4Name, shopSlot4Price);
     }
 
-    /**
-     * Logica di acquisto
-     * 
-     * @param index    L'indice dell'oggetto nella lista (0-3)
-     * @param nameLbl  La label del nome da aggiornare
-     * @param priceLbl La label del prezzo da aggiornare
-     */
-    // In ShopController.java
+    private void tryBuy(int index, Label nameLbl, Label priceLbl) {
+        Item item = getItemSafe(index); // prende l'item che ha l'indice specificato, l'indice va da 0 a 3
 
-private void tryBuy(int index, Label nameLbl, Label priceLbl) {
-    Item item = getItemSafe(index);
-
-    // Se lo slot è vuoto o già venduto, non fare nulla
-    if (item == null || nameLbl.getText().equals("VENDUTO")) {
-        return;
+        // se lo slot è vuoto o già venduto, non fare nulla
+        if (item == null || nameLbl.getText().equals("VENDUTO")) {
+            return;
     }
 
     int prezzo = item.getPrice();
 
-    // 1. Recuperiamo il Player dal GameState
+    // prende il Player dal GameState
     Player player = GameState.get().getPlayer(); 
     
-    // Controllo di sicurezza: se per caso il player è null (es. test senza avviare partita)
+    // controlla se esiste
     if (player == null) {
         System.out.println("Errore: Nessun giocatore trovato!");
         return;
     }
 
+    // prende il gold del player
     int playerGold = player.getGold();
 
     if (playerGold >= prezzo) {
-        // --- LOGICA DI ACQUISTO VERA ---
-        
-        // A. Togli i soldi
+        // tolgo i soldi
         player.setGold(playerGold - prezzo);
         System.out.println("Hai comprato: " + item.getName() + ". Oro rimasto: " + player.getGold());
 
-        // B. Aggiungi all'inventario del giocatore
-        // Usiamo il tuo metodo che applica anche le stats subito
+        // richiamo il metodo di player per aggiungere l'oggetto all'inventario e applicare le statistiche
         player.addItemToInventory(item); 
 
-        // C. Rimuovi l'oggetto dal GameCatalog (così se esci e rientri non c'è più)
-        // Nota: Assicurati di importare GameCatalog
+        //rimuovo l'oggetto dal negozio (dalla lista presente in GameCatalog), così non può essere ricomprato
         GameCatalog.getShopItems().remove(item);
 
-        // --- AGGIORNAMENTO GRAFICA ---
+        // ora appare venduto dove c'era l'oggetto
         nameLbl.setText("VENDUTO");
         nameLbl.setStyle("-fx-text-fill: gray;");
         priceLbl.setText("");
-        
-        // Aggiorniamo la lista locale per evitare click doppi
-        itemsInShop.set(index, null); 
 
+        // toglie l'oggetto anche dalla lista locale ma lo rendo null cosí gli indici rimangono corretti e non scorrono verso il basso
+        itemsInShop.set(index, null); 
     } else {
         System.out.println("Non hai abbastanza soldi! (Hai: " + playerGold + ", Serve: " + prezzo + ")");
-        // Qui potresti aggiungere un effetto visivo (es. testo rosso temporaneo)
     }
 }
-
-    // Helper per evitare crash se la lista è corta
-    private void updateSingleShopSlot(Label nameLbl, Label statsLbl, Label priceLbl, Item item) {
+    private void updateSingleShopSlot(Label nameLbl, Label statsLbl, Label priceLbl, Item item) { //qui scelgo come mostrare le info dell'oggetto
         if (item == null) {
-            nameLbl.setText("---");
+            nameLbl.setText("---"); // se mancano delle cose negli oggetti allora mette queste cose
             statsLbl.setText("");
             priceLbl.setText("");
             return;
         }
         nameLbl.setText(item.getName().toUpperCase());
-        nameLbl.setStyle("-fx-text-fill: white;"); // Resetta il colore
+        nameLbl.setStyle("-fx-text-fill: white;"); // resetta il colore
 
-        // Stats
+        // serve per far apparire bene le stats
         StringBuilder sb = new StringBuilder();
         if (item.getATK() > 0)
             sb.append("ATK: +").append(item.getATK()).append("\n");
@@ -166,7 +156,7 @@ private void tryBuy(int index, Label nameLbl, Label priceLbl) {
 
     private Item getItemSafe(int index) {
         if (index >= 0 && index < itemsInShop.size()) {
-            return itemsInShop.get(index);
+            return itemsInShop.get(index); //restituisce l'oggetto con l'indice specificato
         }
         return null;
     }
