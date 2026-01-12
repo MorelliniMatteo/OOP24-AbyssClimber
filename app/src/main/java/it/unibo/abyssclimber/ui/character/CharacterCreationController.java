@@ -12,7 +12,6 @@ import javafx.scene.control.ToggleGroup;
 
 /**
  * Controller for the character creation screen.
- * Handles element and class selection and confirms player creation.
  */
 public class CharacterCreationController {
 
@@ -29,19 +28,19 @@ public class CharacterCreationController {
     @FXML private ToggleButton soldierBtn;
     @FXML private ToggleButton knightBtn;
 
-    // Toggle groups to enforce single selection
+    // Toggle groups ensure that only one element and one class can be selected
     private final ToggleGroup elementGroup = new ToggleGroup();
     private final ToggleGroup classGroup = new ToggleGroup();
 
     @FXML
     private void initialize() {
-        // Configure element toggles
+        // Configure element toggles and bind enum values
         configureElementToggle(hydroBtn, Tipo.HYDRO);
         configureElementToggle(natureBtn, Tipo.NATURE);
         configureElementToggle(thunderBtn, Tipo.LIGHTNING);
         configureElementToggle(fireBtn, Tipo.FIRE);
 
-        // Configure class toggles
+        // Configure class toggles and bind enum values
         configureClassToggle(mageBtn, Classe.MAGO);
         configureClassToggle(soldierBtn, Classe.SOLDATO);
         configureClassToggle(knightBtn, Classe.CAVALIERE);
@@ -52,17 +51,19 @@ public class CharacterCreationController {
 
         updateSummary();
     }
-    
-    // Assigns an element type to a toggle button
+
+    // Binds an element enum value to a toggle button
     private void configureElementToggle(ToggleButton button, Tipo tipo) {
         button.setToggleGroup(elementGroup);
         button.setUserData(tipo);
+        button.setText(tipo.displayName()); // label comes from enum
     }
 
-    // Assigns a class to a toggle button
+    // Binds a class enum value to a toggle button
     private void configureClassToggle(ToggleButton button, Classe classe) {
         button.setToggleGroup(classGroup);
         button.setUserData(classe);
+        button.setText(classe.getName()); // label comes from enum
     }
 
     // Updates the summary label based on current selections
@@ -79,7 +80,7 @@ public class CharacterCreationController {
         summaryLabel.setText("Tipo: " + elLabel + " | Classe: " + clLabel);
     }
 
-    // Returns to the main menu
+    // Returns to the main menu without creating a player
     @FXML
     private void onBack() {
         SceneRouter.goTo(SceneId.MAIN_MENU);
@@ -96,13 +97,12 @@ public class CharacterCreationController {
             ? (Classe) classGroup.getSelectedToggle().getUserData()
             : null;
 
-        // Prevent confirmation if selections are incomplete
+        // Prevent confirmation if both selections are not made
         if (chosenTipo == null || chosenClasse == null) {
-            System.err.println("Select both Element and Class before confirming.");
+            System.err.println("Seleziona sia Tipo che Classe prima di confermare.");
             return;
         }
 
-        // Initialize player and move to the next scene
         GameState.get().initializePlayer("Hero", chosenTipo, chosenClasse);
         SceneRouter.goTo(SceneId.MOVE_SELECTION);
     }
