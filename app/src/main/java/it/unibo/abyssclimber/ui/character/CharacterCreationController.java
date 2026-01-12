@@ -71,7 +71,7 @@ public class CharacterCreationController {
         else if (selectedEl == natureBtn)  chosenTipo = Tipo.NATURE;
         else if (selectedEl == thunderBtn) chosenTipo = Tipo.LIGHTNING;
 
-        //Selezione Classe
+        //selezione Classe
         Classe chosenClasse = null;
         ToggleButton selectedCl = (ToggleButton) classGroup.getSelectedToggle();
         
