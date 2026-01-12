@@ -5,7 +5,6 @@ import it.unibo.abyssclimber.core.SceneId;
 import it.unibo.abyssclimber.core.SceneRouter;
 import it.unibo.abyssclimber.model.Classe;
 import it.unibo.abyssclimber.model.Tipo;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
@@ -33,26 +32,43 @@ public class CharacterCreationController {
     @FXML
     private void initialize() {
         // group elements
-        hydroBtn.setToggleGroup(elementGroup);
-        natureBtn.setToggleGroup(elementGroup);
-        thunderBtn.setToggleGroup(elementGroup);
-        fireBtn.setToggleGroup(elementGroup);
+        configureElementToggle(hydroBtn, Tipo.HYDRO);
+        configureElementToggle(natureBtn, Tipo.NATURE);
+        configureElementToggle(thunderBtn, Tipo.LIGHTNING);
+        configureElementToggle(fireBtn, Tipo.FIRE);
 
         // group classes
-        mageBtn.setToggleGroup(classGroup);
-        soldierBtn.setToggleGroup(classGroup);
-        knightBtn.setToggleGroup(classGroup);
+        configureClassToggle(mageBtn, Classe.MAGO);
+        configureClassToggle(soldierBtn, Classe.SOLDATO);
+        configureClassToggle(knightBtn, Classe.CAVALIERE);
 
         elementGroup.selectedToggleProperty().addListener((obs, o, n) -> updateSummary());
         classGroup.selectedToggleProperty().addListener((obs, o, n) -> updateSummary());
 
         updateSummary();
     }
+    
+    private void configureElementToggle(ToggleButton button, Tipo tipo) {
+        button.setToggleGroup(elementGroup);
+        button.setUserData(tipo);
+    }
+
+    private void configureClassToggle(ToggleButton button, Classe classe) {
+        button.setToggleGroup(classGroup);
+        button.setUserData(classe);
+    }
 
     private void updateSummary() {
-        String el = elementGroup.getSelectedToggle() instanceof ToggleButton tb ? tb.getText() : "—";
-        String cl = classGroup.getSelectedToggle() instanceof ToggleButton tb ? tb.getText() : "—";
-        summaryLabel.setText("Tipo: " + el + " | Classe: " + cl);
+        Tipo el = elementGroup.getSelectedToggle() != null
+            ? (Tipo) elementGroup.getSelectedToggle().getUserData()
+            : null;
+        Classe cl = classGroup.getSelectedToggle() != null
+            ? (Classe) classGroup.getSelectedToggle().getUserData()
+            : null;
+
+        String elLabel = el != null ? el.displayName() : "—";
+        String clLabel = cl != null ? cl.getName() : "—";
+        summaryLabel.setText("Tipo: " + elLabel + " | Classe: " + clLabel);
     }
 
     @FXML
@@ -60,31 +76,40 @@ public class CharacterCreationController {
         SceneRouter.goTo(SceneId.MAIN_MENU);
     }
 
+    // TODO: qui vanno messi gli enum e non le stringhe
     @FXML
     private void onConfirm() {
-        //selezione Elemento
-        Tipo chosenTipo = null;
-        ToggleButton selectedEl = (ToggleButton) elementGroup.getSelectedToggle();
-        
-        if (selectedEl == hydroBtn)        chosenTipo = Tipo.HYDRO; //ora controlla quale bottone hai premuto e assegna il tipo corrispondente
-        else if (selectedEl == fireBtn)    chosenTipo = Tipo.FIRE; 
-        else if (selectedEl == natureBtn)  chosenTipo = Tipo.NATURE;
-        else if (selectedEl == thunderBtn) chosenTipo = Tipo.LIGHTNING;
+        String elText = elementGroup.getSelectedToggle() instanceof ToggleButton tb ? tb.getText() : null;
+        String clText = classGroup.getSelectedToggle() instanceof ToggleButton tb ? tb.getText() : null;
 
-        //selezione Classe
-        Classe chosenClasse = null;
-        ToggleButton selectedCl = (ToggleButton) classGroup.getSelectedToggle();
-        
-        if (selectedCl == knightBtn)       chosenClasse = Classe.CAVALIERE; //la stessa cosa si applica per la classe
-        else if (selectedCl == mageBtn)    chosenClasse = Classe.MAGO;
-        else if (selectedCl == soldierBtn) chosenClasse = Classe.SOLDATO;
-
-        if (chosenTipo == null || chosenClasse == null) {
+        if (elText == null || clText == null) {
             System.err.println("Seleziona sia Tipo che Classe prima di confermare.");
             return;
         }
 
-        // Initialize the player. Name is hardcoded to "Hero" for now as there is no input field.
+        // conversione da stringa ad enum tipo
+        Tipo chosenTipo = null;
+        switch (elText) {
+            case "Hydro":   chosenTipo = Tipo.HYDRO; break;
+            case "Fire":    chosenTipo = Tipo.FIRE; break;
+            case "Nature":  chosenTipo = Tipo.NATURE; break;
+            case "Thunder": chosenTipo = Tipo.LIGHTNING; break; 
+            default: 
+                System.err.println("Errore: Tipo non riconosciuto -> " + elText);
+                return;
+        }
+
+        // conversione da stringa ad enum classe
+        Classe chosenClasse = null;
+        switch (clText) {
+            case "Knight":  chosenClasse = Classe.CAVALIERE; break;
+            case "Mage":    chosenClasse = Classe.MAGO; break;
+            case "Soldier": chosenClasse = Classe.SOLDATO; break;
+            default:
+                System.err.println("Errore: Classe non riconosciuta -> " + clText);
+                return;
+        }
+
         GameState.get().initializePlayer("Hero", chosenTipo, chosenClasse);
 
         SceneRouter.goTo(SceneId.MOVE_SELECTION);

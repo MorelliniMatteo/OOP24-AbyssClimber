@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unibo.abyssclimber.core.GameCatalog;
+import it.unibo.abyssclimber.core.combat.MoveLoader;
 
 /*
     *Player estende Creature. Le variabili sono ereditate, non visibili direttamente ma modificabili tramite i getter e setter ereditati.
@@ -100,6 +101,7 @@ public class Player extends Creature {
         this.setMaxSTAM(5);
         this.setCrit(5);
         this.setCritDMG(5);
+        selectedMoves.clear();
     }
 
     public int getGold() {
@@ -111,7 +113,7 @@ public class Player extends Creature {
     }
 
     public void setGold(int gold) {
-        this.gold = gold; //TODO: di solito il gold si aumentano o diminuiscono dopo la chiamata quindi qui sta cosí
+        this.gold = gold;
     }
 
     public String toString() {
@@ -119,5 +121,20 @@ public class Player extends Creature {
                 + " | MATK: " + getMATK() + " | DEF: " + getDEF() + " | MDEF: " + getMDEF() + " | STAM: " + getSTAM()
                 + "/" + getMaxSTAM() + " | Element: " + getElement() + " | Crit: " + getCrit() + "% | CritDMG: "
                 + getCritDMG() + "% | Gold: " + getGold();
+    }
+
+    // mosse selezioante dal player
+    private final List<MoveLoader.Move> selectedMoves = new ArrayList<>();
+
+    public List<MoveLoader.Move> getSelectedMoves() {
+        return new ArrayList<>(selectedMoves);
+    }
+
+    // setta le mosse del player
+    public void setSelectedMoves(List<MoveLoader.Move> moves) {
+        selectedMoves.clear();
+        if (moves != null) {
+            selectedMoves.addAll(moves);
+        }
     }
 }
