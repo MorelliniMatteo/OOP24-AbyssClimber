@@ -47,7 +47,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.TextFlow?>
 
-<VBox xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../style/combat.css" fx:controller="app/src/main/java/it/unibo/abyssclimber/ui/combat/CombatController.java">
+<VBox xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../style/combat.css" fx:controller="it.unibo.abyssclimber.ui.combat.CombatController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -82,7 +82,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" spacing="20.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
                            <children>
-                              <TextFlow lineSpacing="1.0" mouseTransparent="true" nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS" fx:id="textFlow" styleClass="combat-log"/>
+                              <TextFlow lineSpacing="1.0" mouseTransparent="true" nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS" fx:id="logFlow" styleClass="combat-log"/>
                               <GridPane alignment="CENTER_RIGHT" gridLinesVisible="false" HBox.hgrow="ALWAYS">
                                 <columnConstraints>
                                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="50.0" />

@@ -2,7 +2,11 @@ package it.unibo.abyssclimber.ui.combat;
 
 import java.util.List;
 
+import it.unibo.abyssclimber.core.GameCatalog;
+import it.unibo.abyssclimber.core.GameState;
+import it.unibo.abyssclimber.core.combat.BattleText;
 import it.unibo.abyssclimber.core.combat.Combat;
+import it.unibo.abyssclimber.core.combat.CombatLog;
 import it.unibo.abyssclimber.core.combat.MoveLoader.Move;
 import it.unibo.abyssclimber.model.Creature;
 import it.unibo.abyssclimber.model.Player;
@@ -10,6 +14,9 @@ import it.unibo.abyssclimber.model.Tipo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 public class CombatController {
@@ -20,17 +27,57 @@ public class CombatController {
     @FXML private Button move5Button;
     @FXML private Button move6Button;
     @FXML private TextFlow logFlow;
+    @FXML private Pane topPane;
+    
 
-    private List<Button> buttonList = List.of(move1Button, move2Button, move3Button, move4Button, move5Button, move6Button);
     private Player player;
+    private Creature monster;
     private Combat combat;
+    private List<Button> buttonList;
+    private CombatLog combatLog;
+    private boolean isElite = false;
+    
     //TODO: fix
-    @SuppressWarnings("unused")
+    
+    public CombatController() {
+        this.player = GameState.get().getPlayer();
+        this.monster = GameCatalog.getRandomMonsterByStage(GameState.get().getFloor());
+    }
+
+    public CombatController(boolean b) {
+        this.player = GameState.get().getPlayer();
+        this.monster = GameCatalog.getRandomMonsterByStage(GameState.get().getFloor());
+        setElite(b);
+    }
+    
+    @FXML
     private void initialize() {
-        enableMoveButtons();
-        /*this.player = ;
+        this.combatLog = new CombatLog();
+        this.combat = new Combat(player, monster, combatLog, this);
+        buttonList = List.of(move1Button, move2Button, move3Button, move4Button, move5Button, move6Button);
         setMoveButton(player);
-        combat = new Combat(, );*/
+        applyBackground(topPane, monster);
+        enableMoveButtons();
+    }
+    
+    public void setElite(boolean b) {
+        if (b) {
+            monster.setIsElite(b);
+            monster.promoteToElite();
+        }
+    }
+
+    private void applyBackground(Pane topPane, Creature monster) {
+        if ( monster.getIsElite()) {
+            topPane.getStyleClass().add("combat-bg-elite");
+            System.out.println("elite BG.");
+        } else if ( monster.getStage().equalsIgnoreCase("BOSS")) {
+            topPane.getStyleClass().add("combat-bg-boss");
+            System.out.println("boss bg.");
+        } else {
+            topPane.getStyleClass().add("combat-bg-normal");
+            System.out.println("normal bg");
+        }
     }
 
     private void applyTipoStyle(Button b, Tipo tipo){
@@ -42,7 +89,7 @@ public class CombatController {
         for ( int i = 0; i < player.getSelectedMoves().size(); i++ ) {
             Button b = buttonList.get(i);
             Move mv = player.getSelectedMoves().get(i);
-            b.setText(mv.getName());
+            b.setText(mv.getName() + "\n" + "Potenza " + mv.getPower() + " | Acc " + mv.getAcc() + " | Costo " +mv.getCost());
             b.setUserData(mv);
             applyTipoStyle(b, mv.getElement());
         }
@@ -63,5 +110,23 @@ public class CombatController {
 
     private void enableMoveButtons() {
         buttonList.forEach(b -> b.setDisable(false));
+    }
+
+    public void renderLog() {
+        logFlow.getChildren().clear();
+
+        for (var line : combatLog.getEvents()) {
+            for ( BattleText bt : line) {
+                Text t = new Text(bt.text());
+
+                switch (bt.type()) {
+                    case NORMAL -> t.setFill(Color.WHITE);
+                    case DAMAGE -> t.setFill(Color.RED);
+                    case CRITICAL -> t.setFill(Color.GOLD);
+                }
+                logFlow.getChildren().add(t);
+
+            }
+        }
     }
 }

@@ -6,8 +6,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.TreeSet;
 
+import it.unibo.abyssclimber.core.GameState;
+import it.unibo.abyssclimber.core.SceneId;
+import it.unibo.abyssclimber.core.SceneRouter;
 import it.unibo.abyssclimber.core.combat.MoveLoader.Move;
 import it.unibo.abyssclimber.model.Creature;
+import it.unibo.abyssclimber.ui.combat.CombatController;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 
@@ -16,24 +20,27 @@ public class Combat {
     private boolean playerTurn = true;
     private Creature player;
     private Creature monster;
+    private CombatController controller;
     private Random random = new Random();
-    private final CombatLog combatLog = new CombatLog();
+    private final CombatLog combatLog; // = new CombatLog();
     private ArrayList<Move> enemyMoves;
 
-    public Combat(Creature creature1, Creature creature2) {
+    public Combat(Creature creature1, Creature creature2, CombatLog log, CombatController controller) {
         this.player = creature1;
         this.monster = creature2;
         this.loadEnemyMove();
+        this.combatLog = log;
+        this.controller = controller;
     }
 
     private void loadEnemyMove () {
         TreeSet<MoveLoader.Move> moveSet = new TreeSet<>(Comparator.comparingInt(Move::getCost).thenComparingInt(Move::getId));
         moveSet.add(MoveLoader.moves.get(random.nextInt(8)));
         while ( moveSet.size() < 4) {
-            moveSet.add(MoveLoader.moves.get(random.nextInt(32)));
+            moveSet.add(MoveLoader.moves.get(random.nextInt(8)));
         }
         if ("BOSS".equalsIgnoreCase(monster.getStage())) {
-            moveSet.add(MoveLoader.moves.get(33));
+            moveSet.add(MoveLoader.moves.get(8));
         }
 
         enemyMoves = new ArrayList<>(moveSet);
@@ -65,7 +72,8 @@ public class Combat {
             combatLog.logCombat(List.of(
                 new BattleText("" + attacker.getName() + " dealt ", LogType.NORMAL),
                 new BattleText(String.valueOf(dmg), LogType.DAMAGE),
-                new BattleText(" damage.\n", LogType.NORMAL)
+                new BattleText(" damage.\n", LogType.NORMAL),
+                new BattleText("" + target.getName() + " has " + target.getHP() + " HP.\n", LogType.NORMAL)
             ));
         }
         return dmg;
@@ -78,34 +86,45 @@ public class Combat {
         dmgCalc(move, player, monster);
         if (monster.getHP() <= 0) {
             combatLog.logCombat("" + monster.getName() + " died. You win.\n", LogType.NORMAL);
+            System.out.println("You win.\n");
+            controller.renderLog();
             // TODO: HANDLE WIN CONDITION
+            if (monster.getIsElite()) { GameState.get().nextFloor();}
+            SceneRouter.goTo(SceneId.ROOM_SELECTION);
             return;
         }
         
-        turn++;
         player.setSTAM(Math.min(player.getMaxSTAM(), player.getSTAM() + player.regSTAM())); 
-        combatLog.renderLog();
+        controller.renderLog();
         monsterTurn();
     }
 
     public void monsterTurn() {
         int choice = 0;
-        PauseTransition delay = new PauseTransition(Duration.seconds(2));
         playerTurn = true;
+
         if (monster.getSTAM() >= monster.getMaxSTAM()) {
             dmgCalc(enemyMoves.getLast(), monster, player);
         } else {
             choice = random.nextInt(enemyMoves.size());
             dmgCalc(enemyMoves.get(choice), monster, player);
         }
-        
-        if (player.getHP() <= 0) {
-            combatLog.logCombat("" + player.getName() + " died. You lose.\n", LogType.NORMAL);
-            // TODO: handle lose condition
-            return;
-        }
 
-        monster.setSTAM(Math.min(monster.getMaxSTAM(), monster.getSTAM() + monster.regSTAM()));
+        controller.renderLog();
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        delay.setOnFinished(e -> {
+            if (player.getHP() <= 0) {
+                combatLog.logCombat("" + player.getName() + " died. You lose.\n", LogType.NORMAL);
+                // TODO: handle lose condition
+                System.out.println("You lose.\n");
+                SceneRouter.goTo(SceneId.GAME_OVER);
+                return;
+            }
+    
+            monster.setSTAM(Math.min(monster.getMaxSTAM(), monster.getSTAM() + monster.regSTAM()));
+
+        });
+
     }
     
 
