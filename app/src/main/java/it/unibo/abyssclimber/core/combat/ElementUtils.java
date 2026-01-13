@@ -47,11 +47,11 @@ public final class ElementUtils {
         return computeEffect(attacker.getElement(), target.getElement());
     }
 
-    public static void weakPhrase(double weak){
+    public static void weakPhrase(double weak, CombatLog log){
         if(weak < 1){
-            System.out.println("It's not very effective.\n");
+            log.logCombat("It's not very effective.\n", LogType.NORMAL);
         } else if (weak > 1) {
-            System.out.println("It's super effective!\n");
+            log.logCombat("It's super effective.\n", LogType.NORMAL);
         } else {
 
         }
