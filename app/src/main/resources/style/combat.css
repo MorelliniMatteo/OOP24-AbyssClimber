@@ -1,0 +1,60 @@
+/* ================================
+   ROOT BACKGROUND
+   ================================ */
+/*.root-background {
+    -fx-background-image: url("assets/images/backgrounds/normal_fight.jpeg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}*/
+
+/* ================================
+   SPLITPANE ITEMS
+   ================================ */
+
+/* Top pane should be transparent so the background shows through */
+#topPane {
+    /*-fx-background-color: rgba(255, 0, 0, 0.3);*/
+    -fx-background-image: url("../assets/images/backgrounds/normal_fight.jpeg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+/* Bottom pane overlay (adjust opacity as needed) */
+#bottomPane {
+    -fx-background-color: rgb(77, 75, 75);
+}
+
+/* Optional: style the divider */
+.split-pane-divider {
+    -fx-background-color: rgba(0, 0, 0, 0.25);
+    -fx-padding: 0.5em;
+}
+
+/* ================================
+   TEXT FLOW (combat log)
+   ================================ */
+
+/* Grey background for the combat log area */
+.combat-log {
+    -fx-background-color: #3a3a3a;      /* medium grey */
+    -fx-padding: 10px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: rgba(255, 255, 255, 0.15);
+    -fx-border-width: 1px;
+}
+
+.move-button {
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-background-insets: 0;
+}
+
+
+.outlined-text {
+    -fx-text-fill: white;
+    -fx-stroke: black;
+    -fx-stroke-width: 1.2;
+}

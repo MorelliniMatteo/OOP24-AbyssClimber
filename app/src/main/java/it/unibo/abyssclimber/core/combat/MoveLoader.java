@@ -107,6 +107,5 @@ public class MoveLoader {
         loadMovesJSON();
         baseMoveAssign(baseMoves);
         moves.forEach(System.out::println);
-        System.out.println(moves.get(8).getPower());
     }
 }
