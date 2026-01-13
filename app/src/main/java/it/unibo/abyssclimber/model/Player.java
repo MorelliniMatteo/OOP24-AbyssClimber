@@ -93,6 +93,7 @@ public class Player extends Creature {
     public void resetRun() {
         inventory.clear();
         System.out.println("Inventory reset.");
+        this.setMaxHP(120);
         this.setHP(120); // resetto le statistiche base del player tramite i setter ereditati da Creature
         this.setATK(15);
         this.setMATK(15);
