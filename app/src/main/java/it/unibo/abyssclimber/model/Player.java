@@ -32,6 +32,8 @@ public class Player extends Creature {
         this.setMaxSTAM(5);
         this.setCrit(5);
         this.setCritDMG(5);
+
+        applicaClasse(classe);
     }
 
     public void applicaClasse(Classe classe) { // metodo che applica le modifiche della classe scelta dal player alle

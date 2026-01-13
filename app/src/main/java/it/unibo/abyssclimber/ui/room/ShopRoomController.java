@@ -26,7 +26,7 @@ public class ShopRoomController {
 
         RoomOption opt = RoomContext.get().getLastChosen();
         if (opt != null) {
-            titleLabel.setText("Mercante");
+            titleLabel.setText("Negozio");
             descLabel.setText(opt.description());
         }
     }
