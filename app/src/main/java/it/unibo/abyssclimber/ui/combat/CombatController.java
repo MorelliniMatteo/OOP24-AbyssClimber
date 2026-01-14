@@ -44,7 +44,7 @@ public class CombatController {
     
     public CombatController() {
         this.player = GameState.get().getPlayer();
-        this.monster = GameCatalog.getRandomMonsterByStage(GameState.get().getFloor());
+        this.monster = GameCatalog.getRandomMonsterByStage(Math.min(9, GameState.get().getFloor()));
     }
 
     public CombatController(boolean b) {

@@ -101,11 +101,11 @@ public class Combat {
             System.out.println("You win.\n");
             if (!monster.getIsElite()) {
                 int gold = GameCatalog.getRandomGoldsAmount();
-                combatLog.logCombat("Enemy dropped " + gold + " gold.", LogType.NORMAL);
+                combatLog.logCombat("Enemy dropped " + gold + " gold.\n", LogType.NORMAL);
                 player.setGold(player.getGold() + gold);
             } else if (monster.getIsElite()) {
                 Item item = GameCatalog.getRandomItem();
-                combatLog.logCombat("Enemy dropped the item " + item.getName() + " .", LogType.NORMAL);
+                combatLog.logCombat("Enemy dropped the item " + item.getName() + ".\n", LogType.NORMAL);
                 player.addItemToInventory(item);
             }
             controller.renderLog();

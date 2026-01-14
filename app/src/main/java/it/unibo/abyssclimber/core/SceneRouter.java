@@ -63,7 +63,7 @@ public final class SceneRouter {
             // Load the UI tree and its controller
             FXMLLoader loader = new FXMLLoader(url);
             // carica la pagina e passa flag elite. Remove if if broken TODO: fix 
-            if (id.equals(SceneId.BOSS_ROOM)) {
+            if (id.equals(SceneId.BOSS_ROOM) || id.equals(SceneId.FINAL_BOSS_ROOM)) {
                 loader.setControllerFactory(param -> new CombatController(true));
             }
             Parent root = loader.load();
