@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.TreeSet;
 
+import it.unibo.abyssclimber.core.GameCatalog;
 import it.unibo.abyssclimber.core.GameState;
 import it.unibo.abyssclimber.core.SceneId;
 import it.unibo.abyssclimber.core.SceneRouter;
 import it.unibo.abyssclimber.core.combat.MoveLoader.Move;
 import it.unibo.abyssclimber.model.Creature;
+import it.unibo.abyssclimber.model.Item;
+import it.unibo.abyssclimber.model.Player;
 import it.unibo.abyssclimber.ui.combat.CombatController;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
@@ -18,14 +21,14 @@ import javafx.util.Duration;
 public class Combat {
     private int turn = 0;
     private boolean playerTurn = true;
-    private Creature player;
+    private Player player;
     private Creature monster;
     private CombatController controller;
     private Random random = new Random();
     private final CombatLog combatLog; // = new CombatLog();
     private ArrayList<Move> enemyMoves;
 
-    public Combat(Creature creature1, Creature creature2, CombatLog log, CombatController controller) {
+    public Combat(Player creature1, Creature creature2, CombatLog log, CombatController controller) {
         this.player = creature1;
         this.monster = creature2;
         this.loadEnemyMove();
@@ -89,6 +92,15 @@ public class Combat {
         if (monster.getHP() <= 0) {
             combatLog.logCombat("" + monster.getName() + " died. You win.\n", LogType.NORMAL);
             System.out.println("You win.\n");
+            if (!monster.getIsElite()) {
+                int gold = GameCatalog.getRandomGoldsAmount();
+                combatLog.logCombat("Enemy dropped " + gold + " gold.", LogType.NORMAL);
+                player.setGold(player.getGold() + gold);
+            } else if (monster.getIsElite()) {
+                Item item = GameCatalog.getRandomItem();
+                combatLog.logCombat("Enemy dropped the item " + item + " .", LogType.NORMAL);
+                player.addItemToInventory(item);
+            }
             controller.renderLog();
             // TODO: HANDLE WIN CONDITION
             if (monster.getIsElite()) { GameState.get().nextFloor();}

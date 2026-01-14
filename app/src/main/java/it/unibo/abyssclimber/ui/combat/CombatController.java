@@ -7,6 +7,7 @@ import it.unibo.abyssclimber.core.GameState;
 import it.unibo.abyssclimber.core.combat.BattleText;
 import it.unibo.abyssclimber.core.combat.Combat;
 import it.unibo.abyssclimber.core.combat.CombatLog;
+import it.unibo.abyssclimber.core.combat.LogType;
 import it.unibo.abyssclimber.core.combat.MoveLoader.Move;
 import it.unibo.abyssclimber.model.Creature;
 import it.unibo.abyssclimber.model.Player;
@@ -61,11 +62,13 @@ public class CombatController {
         player.setSTAM(player.regSTAM());
         labelHP.setText("HP: " + player.getHP() + "/" + player.getMaxHP());
         labelMP.setText("MP: " + player.getSTAM() + "/" + player.getMaxSTAM() + " +" + player.regSTAM());
+        combatLog.logCombat("Room entered. Enemy is a " + monster.getName() + ".", LogType.NORMAL);
+        this.renderLog();
         enableMoveButtons();
         //TODO: remove
         System.out.println(player.getSTAM());
-        monster.setMaxHP(999);
-        monster.setHP(999);
+        monster.setMaxHP(500);
+        monster.setHP(500);
     }
     
     public void setElite(boolean b) {
