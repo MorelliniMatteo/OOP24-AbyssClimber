@@ -1,7 +1,5 @@
 package it.unibo.abyssclimber.core;
 
-import it.unibo.abyssclimber.core.RoomOption;
-
 /**
  * Temporary shop bridge implementation.
  * Replace with real shop system.
