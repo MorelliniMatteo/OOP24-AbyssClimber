@@ -1,5 +1,7 @@
 package it.unibo.abyssclimber.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Creature {
     private String name;
     private int ID;
@@ -133,14 +135,17 @@ public class Creature {
         return isElite;
     }
 
+    @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    @JsonProperty("maxHP")
     public void setMaxHP(int maxHp) {
         this.maxHP = maxHp;
     }
 
+    @JsonProperty("HP")
     public void setHP(int hp) {
         this.HP = hp;
     }
@@ -149,34 +154,42 @@ public class Creature {
         return this.HP <= 0;
     }
 
+    @JsonProperty("ID")
     public void setId(int id) {
         this.ID = id;
     }
 
+    @JsonProperty("ATK")
     public void setATK(int atk) {
         this.ATK = atk;
     }
 
+    @JsonProperty("MATK")
     public void setMATK(int matk) {
         this.MATK = matk;
     }
 
+    @JsonProperty("DEF")
     public void setDEF(int def) {
         this.DEF = def;
     }
 
+    @JsonProperty("MDEF")
     public void setMDEF(int mdef) {
         this.MDEF = mdef;
     }
 
+    @JsonProperty("STAM")
     public void setSTAM(int stam) {
         this.STAM = stam;
     }
 
+    @JsonProperty("regSTAM")
     public void setRegSTAM(int rstam) {
         this.regSTAM = rstam;
     }
 
+    @JsonProperty("maxSTAM")
     public void setMaxSTAM(int mstam) {
         this.maxSTAM = mstam;
     }
@@ -185,10 +198,12 @@ public class Creature {
         this.element = elem;
     }
 
+    @JsonProperty("crit")
     public void setCrit(int crit) {
         this.crit = crit;
     }
 
+    @JsonProperty("critDMG")
     public void setCritDMG(double critdmg) {
         this.critDMG = critdmg;
     }
