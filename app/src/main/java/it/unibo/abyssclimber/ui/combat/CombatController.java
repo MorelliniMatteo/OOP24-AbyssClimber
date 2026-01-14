@@ -9,6 +9,7 @@ import it.unibo.abyssclimber.core.combat.Combat;
 import it.unibo.abyssclimber.core.combat.CombatLog;
 import it.unibo.abyssclimber.core.combat.LogType;
 import it.unibo.abyssclimber.core.combat.MoveLoader.Move;
+import it.unibo.abyssclimber.model.Creature;
 import it.unibo.abyssclimber.model.Player;
 import it.unibo.abyssclimber.model.Tipo;
 import javafx.event.ActionEvent;
