@@ -19,7 +19,7 @@ public class CreaturesAssets {
         ID_TO_PATH_MAP.put(6, "assets/images/creatures/storm_cloud.png");
         ID_TO_PATH_MAP.put(7, "assets/images/creatures/moss_wolf.png");
         ID_TO_PATH_MAP.put(8, "assets/images/creatures/triton_warrior.png");
-        ID_TO_PATH_MAP.put(9, "assets/images/creatures/screming_ghost.png");
+        ID_TO_PATH_MAP.put(9, "assets/images/creatures/screaming_ghost.png");
         ID_TO_PATH_MAP.put(10, "assets/images/creatures/magma_golem.png");
         ID_TO_PATH_MAP.put(11, "assets/images/creatures/living_storm.png");
         ID_TO_PATH_MAP.put(12, "assets/images/creatures/minor_kraken.png");
