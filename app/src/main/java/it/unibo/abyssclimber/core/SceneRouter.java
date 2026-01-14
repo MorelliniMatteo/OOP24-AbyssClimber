@@ -6,6 +6,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+
+import it.unibo.abyssclimber.ui.combat.CombatController;
 
 /**
  * Routes the application to the requested JavaFX scene (FXML-based).
@@ -40,10 +43,10 @@ public final class SceneRouter {
             case MOVE_SELECTION      -> "move_selection.fxml";
             case ROOM_SELECTION      -> "room_selection.fxml";
 
-            case FIGHT_ROOM          -> "fight_room.fxml";
+            case FIGHT_ROOM          -> "combatGUI.fxml";
             case SHOP_ROOM           -> "shop_room.fxml";
-            case BOSS_ROOM           -> "boss_room.fxml";
-            case FINAL_BOSS_ROOM     -> "final_boss_room.fxml";
+            case BOSS_ROOM           -> "combatGUI.fxml";
+            case FINAL_BOSS_ROOM     -> "combatGUI.fxml";
 
             case ROOM_PLACEHOLDER    -> "room_placeholder.fxml";
             case GAME_OVER           -> "game_over.fxml";
@@ -59,13 +62,22 @@ public final class SceneRouter {
 
             // Load the UI tree and its controller
             FXMLLoader loader = new FXMLLoader(url);
+            // carica la pagina e passa flag elite. Remove if if broken TODO: fix 
+            if (id.equals(SceneId.BOSS_ROOM)) {
+                loader.setControllerFactory(param -> new CombatController(true));
+            }
             Parent root = loader.load();
+
 
             // Create the scene with a fixed window size
             Scene scene = new Scene(root, 1280, 720);
-
+            URL cssUrl;
             // Attach the main CSS stylesheet if available
-            var cssUrl = SceneRouter.class.getResource("/style/main.css");
+            if (id == SceneId.FIGHT_ROOM || id == SceneId.BOSS_ROOM || id == SceneId.FINAL_BOSS_ROOM) {
+                cssUrl = SceneRouter.class.getResource("/style/combat.css");
+            } else {
+                cssUrl = SceneRouter.class.getResource("/style/main.css");
+            }
             if (cssUrl != null) {
                 scene.getStylesheets().add(cssUrl.toExternalForm());
             }

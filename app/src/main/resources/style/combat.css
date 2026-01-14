@@ -1,24 +1,5 @@
-/* ================================
-   ROOT BACKGROUND
-   ================================ */
-/*.root-background {
-    -fx-background-image: url("assets/images/backgrounds/normal_fight.jpeg");
-    -fx-background-size: cover;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-}*/
-
-/* ================================
-   SPLITPANE ITEMS
-   ================================ */
-
-/* Top pane should be transparent so the background shows through */
-#topPane {
-    /*-fx-background-color: rgba(255, 0, 0, 0.3);*/
-    -fx-background-image: url("../assets/images/backgrounds/normal_fight.jpeg");
-    -fx-background-size: cover;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
+.root {
+    -fx-font-family: "Verdana";
 }
 
 /* Bottom pane overlay (adjust opacity as needed) */
@@ -52,9 +33,66 @@
     -fx-background-insets: 0;
 }
 
+.move-button:hover {
+    -fx-opacity: 0.8
+}
+
+.move-button:pressed {
+    -fx-opacity: 0.6
+}
+
 
 .outlined-text {
     -fx-text-fill: white;
     -fx-stroke: black;
     -fx-stroke-width: 1.2;
+}
+
+/* Conditional move button background*/
+.tipo-hydro {
+    -fx-background-color: #00BFFF; /* blue */
+}
+
+.tipo-fire {
+    -fx-background-color: #FF4500; /* red-orange */
+}
+
+.tipo-nature {
+    -fx-background-color: #32CD32; /* green */
+}
+
+.tipo-lightning {
+    -fx-background-color: #FFD700; /* yellow */
+}
+
+.combat-bg-normal {
+    -fx-background-image: url("/assets/images/backgrounds/normal_fight.jpeg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.combat-bg-elite {
+    -fx-background-image: url("/assets/images/backgrounds/elite_fight.jpeg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.combat-bg-boss {
+    -fx-background-image: url("/assets/images/backgrounds/boss_fight.jpeg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+/* HP and MP display styles*/
+.label-button-like {
+    -fx-background-color: #4CAF50;
+    -fx-background-radius: 8;
+    -fx-padding: 5 10;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-font-size: 24px;
 }
