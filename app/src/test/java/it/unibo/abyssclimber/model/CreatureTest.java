@@ -26,6 +26,7 @@ class CreatureTest {
     @Test
     void testPromoteToElite() {
         Creature monster = new Creature(Tipo.NATURE, "Orco");
+        monster.setMaxHP(100);
         monster.setHP(100);
         monster.setATK(50);
 
@@ -42,6 +43,7 @@ class CreatureTest {
     @Test
     void testPromoteToEliteIdempotency() {
         Creature monster = new Creature(Tipo.NATURE, "Orco");
+        monster.setMaxHP(100);
         monster.setHP(100);
         
         monster.promoteToElite();

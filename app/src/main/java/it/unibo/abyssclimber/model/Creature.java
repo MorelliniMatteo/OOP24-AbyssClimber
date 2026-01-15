@@ -12,7 +12,7 @@ public class Creature {
     private int DEF;
     private int MDEF;
     private int STAM;
-    private int regSTAM;
+    private int regSTAM = 2;
     private int maxSTAM;
     private Tipo element;
     private int crit;
