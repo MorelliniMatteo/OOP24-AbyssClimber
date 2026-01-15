@@ -26,6 +26,7 @@ public class Combat {
     private int turn = 1;
     private boolean playerTurn = true;
     private Player player;
+    private Creature creature;
     private Creature monster;
     private CombatController controller;
     private Random random = new Random();
@@ -37,6 +38,15 @@ public class Combat {
         this.player = creature1;
         this.monster = creature2;
         this.loadEnemyMove();
+        this.combatLog = log;
+        this.controller = controller;
+        this.controller.setCombatEnd(false);
+    }
+
+    //Constructor for 2 creatures.
+    public Combat(Creature creature1, Creature creature2, CombatLog log, CombatController controller) {
+        this.creature = creature1;
+        this.monster = creature2;
         this.combatLog = log;
         this.controller = controller;
         this.controller.setCombatEnd(false);
@@ -72,9 +82,9 @@ public class Combat {
             combatLog.logCombat(attacker.getName() + " missed.\n", LogType.NORMAL);
         } else {
             if (attack.getType() == 1){
-                dmg = (int) Math.floor(Math.max(0,(attacker.getATK() - target.getDEF()) * weak * (1 + (attack.getPower()/100))));
+                dmg = (int) Math.floor(Math.max(0,(attacker.getATK() - target.getDEF()) * weak * (1 + attack.getPower()/100.0)));
             } else {
-                dmg = (int) Math.floor(Math.max(0,(attacker.getMATK() - target.getMDEF())* weak * (1 + (attack.getPower()/100))));
+                dmg = (int) Math.floor(Math.max(0,(attacker.getMATK() - target.getMDEF())* weak * (1 + attack.getPower()/100.0)));
             }
             if (random.nextInt(101) <= attacker.getCrit()) {
                 combatLog.logCombat(attacker.getName() + " scored a critical hit!\n", LogType.CRITICAL);
