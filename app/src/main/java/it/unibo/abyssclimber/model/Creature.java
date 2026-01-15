@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Creature {
     private String name;
     private int ID;
-    private int maxHP;
     private int HP;
+    private int maxHP;
     private int ATK;
     private int MATK;
     private int DEF;
@@ -31,7 +31,7 @@ public class Creature {
         this.name = copyCreature.name; // in questo si lavora su una copia e non si impatta la lista originale dato che
                                        // i mostri vengono presi casualmente e possono ripetersi
         this.ID = copyCreature.ID;
-        this.maxHP = copyCreature.maxHP;
+        this.maxHP = copyCreature.HP;
         this.HP = copyCreature.HP;
         this.ATK = copyCreature.ATK;
         this.MATK = copyCreature.MATK;
@@ -64,7 +64,7 @@ public class Creature {
     public void promoteToElite() {
         if (!this.isElite) {
             System.out.println("Promoting " + this.name + " to Elite.");
-            this.maxHP = (int) (this.maxHP * 1.2);
+            this.maxHP = (int) (this.HP * 1.2);
             this.HP = this.maxHP;
             this.ATK = (int) (this.ATK * 1.2);
             this.MATK = (int) (this.MATK * 1.2);
