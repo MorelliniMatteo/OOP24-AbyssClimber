@@ -8,6 +8,9 @@ import java.util.TreeSet;
 
 import it.unibo.abyssclimber.core.GameCatalog;
 import it.unibo.abyssclimber.core.GameState;
+import it.unibo.abyssclimber.core.RoomContext;
+import it.unibo.abyssclimber.core.RoomOption;
+import it.unibo.abyssclimber.core.RoomType;
 import it.unibo.abyssclimber.core.SceneId;
 import it.unibo.abyssclimber.core.SceneRouter;
 import it.unibo.abyssclimber.core.combat.MoveLoader.Move;
@@ -108,26 +111,29 @@ public class Combat {
             controller.setCombatEnd(true);
             combatLog.logCombat("" + monster.getName() + " died. You win.\n", LogType.NORMAL);
             System.out.println("You win.\n");
-            if (!monster.getIsElite()) {
-                int gold = GameCatalog.getRandomGoldsAmount();
-                combatLog.logCombat("Enemy dropped " + gold + " gold.\n", LogType.NORMAL);
-                player.setGold(player.getGold() + gold);
-            } else if (monster.getIsElite()) {
-                Item item = GameCatalog.getRandomItem();
-                combatLog.logCombat("Enemy dropped the item " + item.getName() + ".\n", LogType.NORMAL);
-                player.addItemToInventory(item);
+            boolean finalBossFight = isFinalBossFight();
+            if (!finalBossFight) {
+                if (!monster.getIsElite()) {
+                    int gold = GameCatalog.getRandomGoldsAmount();
+                    combatLog.logCombat("Enemy dropped " + gold + " gold.\n", LogType.NORMAL);
+                    player.setGold(player.getGold() + gold);
+                } else if (monster.getIsElite()) {
+                    Item item = GameCatalog.getRandomItem();
+                    combatLog.logCombat("Enemy dropped the item " + item.getName() + " .\n", LogType.NORMAL);
+                    player.addItemToInventory(item);
+                }
             }
             controller.renderLog();
-            // TODO: HANDLE WIN CONDITION
             PauseTransition pause = new PauseTransition(Duration.seconds(5));
             pause.setOnFinished(e -> {
+                if (finalBossFight) {
+                    SceneRouter.goTo(SceneId.WIN);
+                    return;
+                }
                 if (monster.getIsElite()) {
                     GameState.get().nextFloor();
-                    SceneRouter.goTo(SceneId.ROOM_SELECTION);
-                } else if (monster.getStage().equalsIgnoreCase("BOSS")) {
-                    SceneRouter.goTo(SceneId.GAME_OVER);
                 }
-                
+                SceneRouter.goTo(SceneId.ROOM_SELECTION);
             });
             pause.play();
             return;
@@ -189,5 +195,9 @@ public class Combat {
             return;
         }
     }
-}
 
+    private boolean isFinalBossFight() {
+        RoomOption option = RoomContext.get().getLastChosen();
+        return option != null && option.type() == RoomType.FINAL_BOSS;
+    }
+}

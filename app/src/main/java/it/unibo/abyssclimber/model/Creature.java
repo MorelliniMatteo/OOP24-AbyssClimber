@@ -5,18 +5,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Creature {
     private String name;
     private int ID;
-    private int maxHP = 100;
-    private int HP = 100;
-    private int ATK = 15;
-    private int MATK = 10;
-    private int DEF = 10;
-    private int MDEF = 0;
-    private int STAM = 0;
-    private int regSTAM = 1;
-    private int maxSTAM = 5;
+    private int maxHP;
+    private int HP;
+    private int ATK;
+    private int MATK;
+    private int DEF;
+    private int MDEF;
+    private int STAM;
+    private int regSTAM;
+    private int maxSTAM;
     private Tipo element;
-    private int crit = 50;
-    private double critDMG = 1.5;
+    private int crit;
+    private double critDMG;
     private String stage;
     private boolean isElite = false;
 
@@ -67,6 +67,7 @@ public class Creature {
             this.MATK = (int) (this.MATK * 1.2);
             this.DEF = (int) (this.DEF * 1.2);
             this.MDEF = (int) (this.MDEF * 1.2);
+            this.regSTAM = this.regSTAM + 1;
             this.isElite = true;
         }
     }
@@ -135,14 +136,17 @@ public class Creature {
         return isElite;
     }
 
+    @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    @JsonProperty("maxHP")
     public void setMaxHP(int maxHp) {
         this.maxHP = maxHp;
     }
 
+    @JsonProperty("HP")
     public void setHP(int hp) {
         this.HP = hp;
     }
@@ -150,35 +154,43 @@ public class Creature {
     public boolean isDead() {
         return this.HP <= 0;
     }
+
     @JsonProperty("ID")
     public void setId(int id) {
         this.ID = id;
     }
 
+    @JsonProperty("ATK")
     public void setATK(int atk) {
         this.ATK = atk;
     }
 
+    @JsonProperty("MATK")
     public void setMATK(int matk) {
         this.MATK = matk;
     }
 
+    @JsonProperty("DEF")
     public void setDEF(int def) {
         this.DEF = def;
     }
 
+    @JsonProperty("MDEF")
     public void setMDEF(int mdef) {
         this.MDEF = mdef;
     }
 
+    @JsonProperty("STAM")
     public void setSTAM(int stam) {
         this.STAM = stam;
     }
 
+    @JsonProperty("regSTAM")
     public void setRegSTAM(int rstam) {
         this.regSTAM = rstam;
     }
 
+    @JsonProperty("maxSTAM")
     public void setMaxSTAM(int mstam) {
         this.maxSTAM = mstam;
     }
@@ -187,10 +199,12 @@ public class Creature {
         this.element = elem;
     }
 
+    @JsonProperty("crit")
     public void setCrit(int crit) {
         this.crit = crit;
     }
 
+    @JsonProperty("critDMG")
     public void setCritDMG(double critdmg) {
         this.critDMG = critdmg;
     }
