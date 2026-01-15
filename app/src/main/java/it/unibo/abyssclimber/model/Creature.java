@@ -1,5 +1,6 @@
 package it.unibo.abyssclimber.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Creature {
@@ -12,6 +13,7 @@ public class Creature {
     private int DEF;
     private int MDEF;
     private int STAM;
+    @JsonIgnore
     private int regSTAM = 2;
     private int maxSTAM;
     private Tipo element;
@@ -42,7 +44,7 @@ public class Creature {
         this.crit = copyCreature.crit;
         this.critDMG = copyCreature.critDMG;
         this.stage = copyCreature.stage;
-        this.isElite = false;
+        this.isElite = copyCreature.isElite;
     }
 
     public Creature(Tipo tipo, String name) {
@@ -60,7 +62,8 @@ public class Creature {
     }
 
     public void promoteToElite() {
-        if (!isElite) {
+        if (!this.isElite) {
+            System.out.println("Promoting " + this.name + " to Elite.");
             this.maxHP = (int) (this.maxHP * 1.2);
             this.HP = this.maxHP;
             this.ATK = (int) (this.ATK * 1.2);
@@ -117,7 +120,7 @@ public class Creature {
         return STAM;
     }
 
-    public int regSTAM() {
+    public int getRegSTAM() {
         return regSTAM;
     }
 
@@ -160,10 +163,6 @@ public class Creature {
         this.HP = hp;
     }
 
-    public boolean isDead() {
-        return this.HP <= 0;
-    }
-
     @JsonProperty("ID")
     public void setId(int id) {
         this.ID = id;
@@ -194,18 +193,9 @@ public class Creature {
         this.STAM = stam;
     }
 
-    @JsonProperty("regSTAM")
-    public void setRegSTAM(int rstam) {
-        this.regSTAM = rstam;
-    }
-
     @JsonProperty("maxSTAM")
     public void setMaxSTAM(int mstam) {
         this.maxSTAM = mstam;
-    }
-
-    public void setElement(Tipo elem) {
-        this.element = elem;
     }
 
     @JsonProperty("crit")
@@ -218,11 +208,24 @@ public class Creature {
         this.critDMG = critdmg;
     }
 
+    @JsonIgnore
+    public void setRegSTAM(int rstam) {
+        this.regSTAM = rstam;
+    }
+
+    public boolean isDead() {
+        return this.HP <= 0;
+    }
+
     public void setStage(String stage) {
         this.stage = stage;
     }
 
     public void setIsElite(boolean elite) {
         this.isElite = elite;
+    }
+
+    public void setElement(Tipo elem) {
+        this.element = elem;
     }
 }

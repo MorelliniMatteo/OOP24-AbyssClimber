@@ -88,9 +88,9 @@ public class CombatController {
         drawerMDEF.setText("MDEF: " + player.getMDEF());
         drawerCR.setText("Crit \nRate: " + player.getCrit() + "%");
         drawerCDM.setText("Crit \nDamage: " + (int)(player.getCritDMG()*100) + "%");
-        player.setSTAM(player.regSTAM());
+        player.setSTAM(player.getRegSTAM());
         labelHP.setText("HP: " + player.getHP() + "/" + player.getMaxHP());
-        labelMP.setText("MP: " + player.getSTAM() + "/" + player.getMaxSTAM() + " +" + player.regSTAM());
+        labelMP.setText("MP: " + player.getSTAM() + "/" + player.getMaxSTAM() + " +" + player.getRegSTAM());
         combatLog.logCombat("Room entered. Enemy is a " + monster.getName() + ".", LogType.NORMAL);
         this.renderLog();
         enableMoveButtons();
@@ -100,8 +100,9 @@ public class CombatController {
     //If enemy is flagged as an elite calls the promotion methods and sets it's flag.
     public void setElite(boolean b) {
         if (b) {
-            monster.setIsElite(b);
             monster.promoteToElite();
+            //TODO: REMOVE
+            System.err.println("Bloccato dopo Elite");
         }
     }
 
@@ -187,7 +188,7 @@ public class CombatController {
     //Other stats cannot change during a battle, and as such do not need to be updated.
     public void updateStats() {
         labelHP.setText("HP: " + player.getHP() + "/" + player.getMaxHP());
-        labelMP.setText("MP: " + player.getSTAM() + "/" + player.getMaxSTAM() + " +" + player.regSTAM());
+        labelMP.setText("MP: " + player.getSTAM() + "/" + player.getMaxSTAM() + " +" + player.getRegSTAM());
     }
 
     //Flag on combat end.
