@@ -85,8 +85,19 @@ public class GameCatalog {
         Random randomIndex = new Random();
         Creature copy = candidates.get(randomIndex.nextInt(candidates.size())); //sceglie un int casuale tra 0 e la dimensiuone della lista dei mostri per lo stage corrente
         Creature copyCreature = new Creature(copy); //crea una nuova istanza di Creature a partire dal mostro preso casualmente dalla lista
+        applyFloorModifier(copyCreature, level); //applica il modificatore di piano al mostro creato
         return copyCreature;
     }   
+
+    private static void applyFloorModifier(Creature monster, int level){
+        double modifier = 1 + (level - 1) * 0.1; // Aumento del 10% per ogni piano oltre il primo
+        monster.setMaxHP((int)(monster.getMaxHP() * modifier));
+        monster.setHP(monster.getMaxHP());
+        monster.setATK((int)(monster.getATK() * modifier));
+        monster.setMATK((int)(monster.getMATK() * modifier));
+        monster.setDEF((int)(monster.getDEF() * modifier));
+        monster.setMDEF((int)(monster.getMDEF() * modifier));
+    }
     
     public static Item lookupItem(int id) {
         return itemsMap.get(id);
@@ -108,6 +119,6 @@ public class GameCatalog {
 
     public static int getRandomGoldsAmount() {
         Random rng = new Random();
-        return rng.nextInt(50, 151); // Genera un numero casuale tra 50 e 150 (inclusivo)
+        return rng.nextInt(125, 201); // Genera un numero casuale tra 100 e 200 (inclusivo)
     }
 }

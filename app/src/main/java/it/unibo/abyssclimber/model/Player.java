@@ -27,8 +27,8 @@ public class Player extends Creature {
         this.setSTAM(5);
         this.setRegSTAM(2);
         this.setMaxSTAM(5);
-        this.setCrit(5);
-        this.setCritDMG(5);
+        this.setCrit(1);
+        this.setCritDMG(0);
 
         applicaClasse(classe);
     }

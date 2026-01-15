@@ -1,8 +1,6 @@
 package it.unibo.abyssclimber.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-//TODO:Il gioco é da bilanciare
-
 public class Item {
     private int ID;
     private String name;
