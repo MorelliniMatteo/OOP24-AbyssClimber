@@ -5,18 +5,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Creature {
     private String name;
     private int ID;
-    private int maxHP = 100;
-    private int HP = 100;
-    private int ATK = 15;
-    private int MATK = 10;
-    private int DEF = 10;
-    private int MDEF = 0;
-    private int STAM = 0;
-    private int regSTAM = 1;
-    private int maxSTAM = 5;
+    private int maxHP;
+    private int HP;
+    private int ATK;
+    private int MATK;
+    private int DEF;
+    private int MDEF;
+    private int STAM;
+    private int regSTAM;
+    private int maxSTAM;
     private Tipo element;
-    private int crit = 50;
-    private double critDMG = 1.5;
+    private int crit;
+    private double critDMG;
     private String stage;
     private boolean isElite = false;
 
@@ -67,6 +67,7 @@ public class Creature {
             this.MATK = (int) (this.MATK * 1.2);
             this.DEF = (int) (this.DEF * 1.2);
             this.MDEF = (int) (this.MDEF * 1.2);
+            this.regSTAM = this.regSTAM + 1;
             this.isElite = true;
         }
     }
