@@ -18,7 +18,7 @@ import java.util.ArrayList;
     *Questi oggetti della lista vengono poi inseriti nella mappa itemsMap con chiave l'id dell'oggetto e l'oggetto stesso come valore
  */
 public class GameCatalog {
-    private static Map<Integer, Item> itemsMap = new HashMap<>();
+    private static Map<Integer, Item> itemsMap = new HashMap<>(); //mapppa che contiene gli oggetti con chiave l'id dell'oggetto
     private static Map<Stage, List<Creature>> monstersMap = new EnumMap<>(Stage.class); //dato che so giá la struttura che deve avere l'hashmap perché uso Enum, uso EnumMap che permette una lettura piú veloce
     
     private static List<Item> items = new ArrayList<>(); //lista che contiene tutti gli oggetti caricati da DataLoader
@@ -51,12 +51,12 @@ public class GameCatalog {
 
 
         List<Creature> monsters = dataLoader.loadMonsters();
-        for (Stage stage : Stage.values()){ //inizializzo la mappa con le chiavi Stage e liste vuote che conteranno i mostri con quel determinato stage
+        for (Stage stage : Stage.values()){ //ad ogni ID che in questo caso corrisponde allo stage, creo una lista vuota che contiene i mostri con quel determinato stage
             monstersMap.put(stage, new ArrayList<>());
         }
         for (Creature monster : monsters){ //cerca i mostri nella lista dei mostri che hanno uno stage definito e li inserisce nella mappa sotto lo stage corrispondente
             if (monster.getStage() != null){
-                Stage stageEnum = Stage.valueOf(monster.getStage()); //valueOf converte la stringa che rappresenta lo stage del mostro nella lista e lo converte in un elemento dell'enum Stage
+                Stage stageEnum = Stage.valueOf(monster.getStage()); //valueOf converte la stringa che rappresenta lo stage del mostro nella lista e lo converte in un elemento dell'enum Stage.
                 monstersMap.get(stageEnum).add(monster);             //é esattamente Stage. che determina in cosa deve essere trasformata la stringa o qualsiasi cosa ci sta dopo
             }
         }
