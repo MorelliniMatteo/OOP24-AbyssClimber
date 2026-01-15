@@ -139,7 +139,7 @@ public class Combat {
             return;
         }
         
-        player.setSTAM(Math.min(player.getMaxSTAM(), player.getSTAM() + player.regSTAM())); 
+        player.setSTAM(Math.min(player.getMaxSTAM(), player.getSTAM() + player.getRegSTAM())); 
         controller.renderLog();
         monsterTurn();
         turn++;
@@ -151,7 +151,7 @@ public class Combat {
 
         //TODO: remove
         System.out.println("Monster stamina: " + monster.getSTAM());
-        System.out.println("Monster stamina regen: " + monster.regSTAM());
+        System.out.println("Monster stamina regen: " + monster.getRegSTAM());
 
         if (monster.getSTAM() >= monster.getMaxSTAM()) {
             dmgCalc(enemyMoves.getLast(), monster, player);
@@ -181,7 +181,7 @@ public class Combat {
             delay.play();
             
         };
-        monster.setSTAM(Math.min(monster.getMaxSTAM(), monster.getSTAM() + monster.regSTAM()));
+        monster.setSTAM(Math.min(monster.getMaxSTAM(), monster.getSTAM() + monster.getRegSTAM()));
 
     }
     
