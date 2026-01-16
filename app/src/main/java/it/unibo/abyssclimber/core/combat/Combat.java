@@ -81,7 +81,7 @@ public class Combat {
     private void playerTurn(CombatMove move) {
         if ( !playerTurn || player.getHP() <= 0 || monster.getHP() <= 0) return;
         else if (move.getCost() > player.getSTAM()) {
-            combatLog.logCombat("Insufficient mana.", LogType.NORMAL);
+            combatLog.logCombat("Insufficient mana.\n", LogType.NORMAL);
             controller.renderLog();
             return;
         }

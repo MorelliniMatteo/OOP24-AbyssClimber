@@ -90,7 +90,7 @@ public class CombatController  implements CombatPresenter{
         drawerSet();
         player.setSTAM(player.getRegSTAM());
         updateStats();
-        combatLog.logCombat("Room entered. Enemy is a " + monster.getName() + ".", LogType.NORMAL);
+        combatLog.logCombat("Room entered. Enemy is a " + monster.getName() + ".\n", LogType.NORMAL);
         this.renderLog();
         enableMoveButtons();
         System.out.println(player.getSTAM());
@@ -210,7 +210,7 @@ public class CombatController  implements CombatPresenter{
     @Override
     public void onTurnStart(int turn) {
         combatLog.clearEvents();
-        combatLog.logCombat("Turn " + turn, LogType.NORMAL);
+        combatLog.logCombat("Turn " + turn + "\n", LogType.NORMAL);
         renderLog();
     }
 
