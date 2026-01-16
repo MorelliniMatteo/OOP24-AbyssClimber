@@ -7,12 +7,13 @@ import it.unibo.abyssclimber.model.Player;
 import it.unibo.abyssclimber.core.SceneRouter;
 import it.unibo.abyssclimber.core.GameCatalog;
 import it.unibo.abyssclimber.core.GameState;
+import it.unibo.abyssclimber.core.Refreshable;
 import it.unibo.abyssclimber.core.SceneId;
 
 import java.util.List;
 import java.util.ArrayList;
 
-public class ShopController implements ShopControllerInterface {
+public class ShopController implements ShopControllerInterface, Refreshable {
 
     // Fa da segnaposto, il file fxml viene letto, trova label con id specifico, cerca in questo file qualcosa con lo stesso nome, 
     // in questo caso sono le variabili e inserisce la Label creata dal file grafico dentro la variabile Java
@@ -45,6 +46,12 @@ public class ShopController implements ShopControllerInterface {
         updateShopUI(items);
 
         //mostro l'oro se il player esiste
+        refreshHud();
+    }
+
+    @Override
+    public void onShow() {
+        updateShopUI(GameCatalog.getShopItems());
         refreshHud();
     }
 

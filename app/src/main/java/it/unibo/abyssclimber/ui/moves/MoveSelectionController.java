@@ -1,9 +1,9 @@
 package it.unibo.abyssclimber.ui.moves;
 
-import it.unibo.abyssclimber.core.GameState;
 import it.unibo.abyssclimber.core.SceneId;
 import it.unibo.abyssclimber.core.SceneRouter;
 import it.unibo.abyssclimber.core.combat.MoveLoader;
+import it.unibo.abyssclimber.core.services.MoveSelectionService;
 import it.unibo.abyssclimber.model.Tipo;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,8 +24,6 @@ import java.util.Set;
 public class MoveSelectionController {
 
     // Maximum number of selectable moves
-    private static final int MAX_SELECTED = 6;
-
     // Number of columns in each grid
     private static final int COLS = 4;
 
@@ -40,6 +38,7 @@ public class MoveSelectionController {
 
     // Currently selected move buttons
     private final Set<ToggleButton> selected = new HashSet<>();
+    private final MoveSelectionService selectionService = new MoveSelectionService();
 
     /**
      * Called automatically after FXML loading.
@@ -113,7 +112,7 @@ public class MoveSelectionController {
             // Selection logic with max limit check
             tb.setOnAction(e -> {
                 if (tb.isSelected()) {
-                    if (selected.size() >= MAX_SELECTED) {
+                    if (selected.size() >= MoveSelectionService.MAX_SELECTED) {
                         tb.setSelected(false);
                         return;
                     }
@@ -134,13 +133,15 @@ public class MoveSelectionController {
      * Updates label text and start button state.
      */
     private void refresh() {
-        boolean hasCostOne = hasCostOneSelected();
-        if (selected.size() == MAX_SELECTED && !hasCostOne) {
+        List<MoveLoader.Move> selectedMoves = getSelectedMoves();
+        boolean hasCostOne = selectionService.hasRequiredCostOne(selectedMoves);
+        if (selectedMoves.size() == MoveSelectionService.MAX_SELECTED && !hasCostOne) {
             infoLabel.setText("You must select at least one move with cost 1.");
         } else {
-            infoLabel.setText("Select 6 moves (" + selected.size() + "/" + MAX_SELECTED + ").");
+            infoLabel.setText("Select 6 moves (" + selectedMoves.size()
+                + "/" + MoveSelectionService.MAX_SELECTED + ").");
         }
-        startBtn.setDisable(selected.size() != MAX_SELECTED || !hasCostOne);
+        startBtn.setDisable(!selectionService.isSelectionValid(selectedMoves));
     }
 
     /**
@@ -156,25 +157,19 @@ public class MoveSelectionController {
      */
     @FXML
     private void onStartRun() {
-        if (selected.size() != MAX_SELECTED || !hasCostOneSelected()) {
+        List<MoveLoader.Move> selectedMoves = getSelectedMoves();
+        if (!selectionService.isSelectionValid(selectedMoves)) {
             refresh();
             return;
         }
 
-        // Extract selected moves from toggle buttons
-        List<MoveLoader.Move> chosen = selected.stream()
-            .map(tb -> (MoveLoader.Move) tb.getUserData())
-            .toList();
-
-        // Store moves in the global game state
-        GameState.get().getPlayer().setSelectedMoves(chosen);
-
-        SceneRouter.goTo(SceneId.ROOM_SELECTION);
+        SceneId nextScene = selectionService.startRun(selectedMoves);
+        SceneRouter.goTo(nextScene);
     }
 
-    private boolean hasCostOneSelected() {
+    private List<MoveLoader.Move> getSelectedMoves() {
         return selected.stream()
             .map(tb -> (MoveLoader.Move) tb.getUserData())
-            .anyMatch(move -> move.getCost() == 1);
+            .toList();
     }
 }
