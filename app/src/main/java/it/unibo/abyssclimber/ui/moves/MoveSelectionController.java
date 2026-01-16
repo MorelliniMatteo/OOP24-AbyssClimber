@@ -2,6 +2,7 @@ package it.unibo.abyssclimber.ui.moves;
 
 import it.unibo.abyssclimber.core.SceneId;
 import it.unibo.abyssclimber.core.SceneRouter;
+import it.unibo.abyssclimber.core.combat.CombatMove;
 import it.unibo.abyssclimber.core.combat.MoveLoader;
 import it.unibo.abyssclimber.core.services.MoveSelectionService;
 import it.unibo.abyssclimber.model.Tipo;
@@ -46,7 +47,7 @@ public class MoveSelectionController {
      */
     @FXML
     private void initialize() {
-        List<MoveLoader.Move> moves = loadMovesSafe();
+        List<CombatMove> moves = loadMovesSafe();
 
         // Handle loading error
         if (moves.isEmpty()) {
@@ -67,7 +68,7 @@ public class MoveSelectionController {
     /**
      * Safely loads moves from the MoveLoader.
      */
-    private List<MoveLoader.Move> loadMovesSafe() {
+    private List<CombatMove> loadMovesSafe() {
         if (MoveLoader.getMoves().isEmpty()) {
             try {
                 MoveLoader.loadMoves();
@@ -82,7 +83,7 @@ public class MoveSelectionController {
     /**
      * Returns only moves of the given element.
      */
-    private List<MoveLoader.Move> filterByElement(List<MoveLoader.Move> moves, Tipo element) {
+    private List<CombatMove> filterByElement(List<CombatMove> moves, Tipo element) {
         return moves.stream()
             .filter(m -> m.getElement() == element)
             .toList();
@@ -91,11 +92,11 @@ public class MoveSelectionController {
     /**
      * Creates toggle buttons for each move and adds them to the grid.
      */
-    private void fillGrid(GridPane grid, List<MoveLoader.Move> list) {
+    private void fillGrid(GridPane grid, List<CombatMove> list) {
         grid.getChildren().clear();
 
         for (int i = 0; i < list.size(); i++) {
-            MoveLoader.Move m = list.get(i);
+            CombatMove m = list.get(i);
 
             ToggleButton tb = new ToggleButton();
             tb.getStyleClass().add("move-tile");

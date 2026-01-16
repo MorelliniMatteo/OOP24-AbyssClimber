@@ -18,7 +18,7 @@ public class MoveLoader {
 
     private static ArrayList<BaseMove> baseMoves;
     private static ArrayList<Move> fullMoves;
-    private static ArrayList<Move> moves = new ArrayList<>();
+    private static ArrayList<CombatMove> moves = new ArrayList<>();
     
     /**
      * Usable move for both the player and the monster.
@@ -121,7 +121,7 @@ public class MoveLoader {
         baseMoveAssign(baseMoves);
     }
 
-    public static ArrayList<Move> getMoves() {
+    public static ArrayList<CombatMove> getMoves() {
         return moves;
     }
 }

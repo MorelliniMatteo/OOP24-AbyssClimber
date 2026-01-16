@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.TreeSet;
 
-import it.unibo.abyssclimber.core.combat.MoveLoader.Move;
 import it.unibo.abyssclimber.model.Creature;
 
 /**
@@ -30,7 +29,7 @@ public final class LoadEnemyMoves {
         int preferType = creature.getATK() >= creature.getMATK() ? 1 : 2;
 
         //Filter the first 8 moves by the preffered attack type
-        List<Move> filtered = MoveLoader.getMoves().stream().filter(m -> m.getCost() == 1).filter(mv -> mv.getType() == preferType).toList();
+        List<CombatMove> filtered = MoveLoader.getMoves().stream().filter(m -> m.getCost() == 1).filter(mv -> mv.getType() == preferType).toList();
         //Empty fallback
         if (filtered.isEmpty()) {
             moveSet.add(MoveLoader.getMoves().getFirst());
