@@ -8,12 +8,11 @@ import it.unibo.abyssclimber.core.GameCatalog;
 import it.unibo.abyssclimber.core.RoomContext;
 import it.unibo.abyssclimber.core.RoomOption;
 import it.unibo.abyssclimber.core.RoomType;
-import it.unibo.abyssclimber.core.SceneId;
-import it.unibo.abyssclimber.core.SceneRouter;
+
+
 import it.unibo.abyssclimber.model.Creature;
 import it.unibo.abyssclimber.model.Item;
 import it.unibo.abyssclimber.model.Player;
-import it.unibo.abyssclimber.ui.combat.CombatController;
 
 //Main combat method. Ineracts with CombatController.
 public class Combat {
@@ -33,14 +32,6 @@ public class Combat {
         this.player = creature1;
         this.monster = creature2;
         this.enemyMoves = new ArrayList<>(LoadEnemyMoves.load(creature2));
-        this.combatLog = log;
-        this.controller = controller;
-        this.controller.setCombatEnd(false);
-    }
-    //Constructor for 2 creatures.
-    public Combat(Creature creature1, Creature creature2, CombatLog log, CombatController controller) {
-        this.creature = creature1;
-        this.monster = creature2;
         this.combatLog = log;
         this.controller = controller;
         this.controller.setCombatEnd(false);
@@ -132,8 +123,6 @@ public class Combat {
                 dmgCalc(choice, monster, player);
             }
         }
-        //TODO: remove
-        System.out.println("Monster stamina after move: " + monster.getSTAM());
         controller.renderLog();
 
         if (player.getHP() <= 0) {

@@ -105,7 +105,6 @@ public class MoveLoader {
     public static void loadMoves() throws IOException{
         loadMovesJSON();
         baseMoveAssign(baseMoves);
-        //moves.forEach(System.out::println);
     }
 
     public static ArrayList<Move> getMoves() {
