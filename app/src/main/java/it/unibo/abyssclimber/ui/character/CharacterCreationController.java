@@ -1,10 +1,9 @@
 package it.unibo.abyssclimber.ui.character;
 
-import it.unibo.abyssclimber.core.GameState;
 import it.unibo.abyssclimber.core.SceneId;
 import it.unibo.abyssclimber.core.SceneRouter;
+import it.unibo.abyssclimber.core.services.CharacterCreationService;
 import it.unibo.abyssclimber.model.Classe;
-import it.unibo.abyssclimber.model.Difficulty;
 import it.unibo.abyssclimber.model.Tipo;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -38,6 +37,7 @@ public class CharacterCreationController {
     private final ToggleGroup elementGroup = new ToggleGroup();
     private final ToggleGroup classGroup = new ToggleGroup();
     private final ToggleGroup difficultyGroup = new ToggleGroup();
+    private final CharacterCreationService creationService = new CharacterCreationService();
 
     @FXML
     private void initialize() {
@@ -130,11 +130,7 @@ public class CharacterCreationController {
         Classe classe = (Classe) classGroup.getSelectedToggle().getUserData();
         double multiplier = (double) difficultyGroup.getSelectedToggle().getUserData();
 
-        // Apply the selected difficulty multiplier
-        Difficulty.setDifficultyMultiplier(multiplier);
-
-        // Create the player and move to the next scene
-        GameState.get().initializePlayer("Hero", tipo, classe);
-        SceneRouter.goTo(SceneId.MOVE_SELECTION);
+        SceneId nextScene = creationService.confirmCharacter("Hero", tipo, classe, multiplier);
+        SceneRouter.goTo(nextScene);
     }
 }

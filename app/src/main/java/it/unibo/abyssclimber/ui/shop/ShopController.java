@@ -7,6 +7,7 @@ import it.unibo.abyssclimber.model.Player;
 import it.unibo.abyssclimber.core.SceneRouter;
 import it.unibo.abyssclimber.core.GameCatalog;
 import it.unibo.abyssclimber.core.GameState;
+import it.unibo.abyssclimber.core.Refreshable;
 import it.unibo.abyssclimber.core.SceneId;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  * dell'interfaccia grafica (definiti nel file FXML), esegue la validazione della logica
  * di acquisto (controllo fondi, disponibilità) e aggiorna lo stato del {@link Player}.
  */
-public class ShopController implements ShopControllerInterface {
+public class ShopController implements ShopControllerInterface, Refreshable {
 
     /**
      * Riferimenti ai componenti grafici definiti nel file FXML.
@@ -73,6 +74,12 @@ public class ShopController implements ShopControllerInterface {
         updateSingleShopSlot(shopSlot2Name, shopSlot2Stats, shopSlot2Price, getItemSafe(1));
         updateSingleShopSlot(shopSlot3Name, shopSlot3Stats, shopSlot3Price, getItemSafe(2));
         updateSingleShopSlot(shopSlot4Name, shopSlot4Stats, shopSlot4Price, getItemSafe(3));
+    }
+
+    @Override
+    public void onShow() {
+        updateShopUI(GameCatalog.getShopItems());
+        refreshHud();
     }
 
     @FXML
