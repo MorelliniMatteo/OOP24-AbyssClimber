@@ -20,8 +20,6 @@ public class Combat {
     private int turn = 1;
     private boolean playerTurn = true;
     private Player player;
-    @SuppressWarnings("unused")
-    private Creature creature;
     private Creature monster;
     private CombatPresenter controller;
     private Random random = new Random();
@@ -166,6 +164,7 @@ public class Combat {
         } else if (monster.getIsElite()) {
             Item item = GameCatalog.getRandomItem();
             combatLog.logCombat("Enemy dropped the item " + item.getName() + ".\n", LogType.NORMAL);
+            combatLog.logCombat(item.toString() + "\n", LogType.NORMAL);
             player.addItemToInventory(item);
         }  
     }
