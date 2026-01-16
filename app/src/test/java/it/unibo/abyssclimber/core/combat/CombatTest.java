@@ -23,6 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import it.unibo.abyssclimber.model.Classe;
 import it.unibo.abyssclimber.model.Creature;
+import it.unibo.abyssclimber.model.GameEntity;
 import it.unibo.abyssclimber.model.Player;
 import it.unibo.abyssclimber.model.Tipo;
 
@@ -166,8 +167,8 @@ public class CombatTest {
         assertEquals(0.75, weak);
     }
 
-    private int combatTestableDmg(Combat combat, CombatMove mv, Creature attacker, Creature target) throws Exception {
-        var method = Combat.class.getDeclaredMethod("dmgCalc", CombatMove.class, Creature.class, Creature.class);
+    private int combatTestableDmg(Combat combat, CombatMove mv, GameEntity attacker, GameEntity target) throws Exception {
+        var method = Combat.class.getDeclaredMethod("dmgCalc", CombatMove.class, GameEntity.class, GameEntity.class);
         method.setAccessible(true);
         return (int) method.invoke(combat, mv, attacker, target);
     }

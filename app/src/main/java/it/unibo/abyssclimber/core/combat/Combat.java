@@ -11,6 +11,7 @@ import it.unibo.abyssclimber.core.RoomType;
 
 
 import it.unibo.abyssclimber.model.Creature;
+import it.unibo.abyssclimber.model.GameEntity;
 import it.unibo.abyssclimber.model.Item;
 import it.unibo.abyssclimber.model.Player;
 
@@ -38,7 +39,7 @@ public class Combat {
     }
 
     //Calculates damage, creates logs to print (conditional: critical hit, miss), calculates stamina remaning after cost.
-    private int dmgCalc(CombatMove attack, Creature attacker, Creature target){
+    private int dmgCalc(CombatMove attack, GameEntity attacker, GameEntity target){
         int dmg = 0;
         double weak = 0;
         weak = ElementUtils.getEffect(attack, target);
@@ -73,7 +74,7 @@ public class Combat {
         return rand.nextInt(101) > move.getAcc();
     }
 
-    private int applyCrit(int damage, Creature attacker, CombatMove move, Random rand) {
+    private int applyCrit(int damage, GameEntity attacker, CombatMove move, Random rand) {
         if (rand.nextInt(101) <= attacker.getCrit()) {
             combatLog.logCombat(attacker.getName() + " scored a critical hit!\n", LogType.CRITICAL);
             return (int) Math.floor(damage * attacker.getCritDMG());

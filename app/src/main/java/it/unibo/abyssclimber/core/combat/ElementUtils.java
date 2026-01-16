@@ -1,6 +1,6 @@
 package it.unibo.abyssclimber.core.combat;
 
-import it.unibo.abyssclimber.model.Creature;
+import it.unibo.abyssclimber.model.GameEntity;
 import it.unibo.abyssclimber.model.Tipo;
 
 //Class that manages elemental weaknesses and the appropriate log types.
@@ -42,12 +42,12 @@ public final class ElementUtils {
     }
 
     //Calls computeEffect, the main method to be used.
-    public static double getEffect (CombatMove attacker, Creature target){
+    public static double getEffect (CombatMove attacker, GameEntity target){
         return computeEffect(attacker.getElement(), target.getElement());
     }
 
     //Calls computeEffect on 2 creature types. Not currently used, kept intentionally for possible future uses.
-    public static double getEffect (Creature attacker, Creature target){
+    public static double getEffect (GameEntity attacker, GameEntity target){
         return computeEffect(attacker.getElement(), target.getElement());
     }
 
