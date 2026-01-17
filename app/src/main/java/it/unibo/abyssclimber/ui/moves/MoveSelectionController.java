@@ -134,7 +134,7 @@ public class MoveSelectionController {
      * Updates label text and start button state.
      */
     private void refresh() {
-        List<MoveLoader.Move> selectedMoves = getSelectedMoves();
+        List<CombatMove> selectedMoves = getSelectedMoves();
         boolean hasCostOne = selectionService.hasRequiredCostOne(selectedMoves);
         if (selectedMoves.size() == MoveSelectionService.MAX_SELECTED && !hasCostOne) {
             infoLabel.setText("You must select at least one move with cost 1.");
@@ -158,7 +158,7 @@ public class MoveSelectionController {
      */
     @FXML
     private void onStartRun() {
-        List<MoveLoader.Move> selectedMoves = getSelectedMoves();
+        List<CombatMove> selectedMoves = getSelectedMoves();
         if (!selectionService.isSelectionValid(selectedMoves)) {
             refresh();
             return;
@@ -168,9 +168,9 @@ public class MoveSelectionController {
         SceneRouter.goTo(nextScene);
     }
 
-    private List<MoveLoader.Move> getSelectedMoves() {
+    private List<CombatMove> getSelectedMoves() {
         return selected.stream()
-            .map(tb -> (MoveLoader.Move) tb.getUserData())
+            .map(tb -> (CombatMove) tb.getUserData())
             .toList();
     }
 }

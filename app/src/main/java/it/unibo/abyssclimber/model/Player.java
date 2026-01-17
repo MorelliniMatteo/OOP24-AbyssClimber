@@ -3,7 +3,8 @@ package it.unibo.abyssclimber.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.unibo.abyssclimber.core.combat.MoveLoader;
+import it.unibo.abyssclimber.core.combat.CombatMove;
+import it.unibo.abyssclimber.core.combat.Move;
 
 /**
  * Rappresenta il personaggio giocante controllato dall'utente.
@@ -139,15 +140,15 @@ public class Player extends GameEntity implements PlayerInterface{
     }
 
     // mosse selezionate dal player
-    private final List<MoveLoader.Move> selectedMoves = new ArrayList<>();
+    private final List<CombatMove> selectedMoves = new ArrayList<>();
 
     /**
      * Restituisce una copia difensiva della lista delle mosse equipaggiate.
      * Viene restituita una nuova {@code ArrayList} per preservare l'incapsulamento 
      * ed evitare che riferimenti esterni possano modificare direttamente la lista privata.
-     * @return Una {@link List} di {@link MoveLoader.Move}.
+     * @return Una {@link List} di {@link Move}.
      */
-    public List<MoveLoader.Move> getSelectedMoves() {
+    public List<CombatMove> getSelectedMoves() {
         return new ArrayList<>(selectedMoves);
     }
 
@@ -157,7 +158,7 @@ public class Player extends GameEntity implements PlayerInterface{
      * gestendo correttamente il caso di input nullo.
      * @param moves La lista delle nuove mosse da equipaggiare.
      */
-    public void setSelectedMoves(List<MoveLoader.Move> moves) {
+    public void setSelectedMoves(List<CombatMove> moves) {
         selectedMoves.clear();
         if (moves != null) {
             selectedMoves.addAll(moves);

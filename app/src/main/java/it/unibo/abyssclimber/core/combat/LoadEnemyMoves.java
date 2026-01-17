@@ -29,7 +29,7 @@ public final class LoadEnemyMoves {
         int preferType = creature.getATK() >= creature.getMATK() ? 1 : 2;
 
         //Filter the first 8 moves by the preffered attack type
-        List<CombatMove> filtered = MoveLoader.getMoves().stream().filter(m -> m.getCost() == 1).filter(mv -> mv.getType() == preferType).toList();
+        List<Move> filtered = MoveLoader.getMoves().stream().filter(m -> m.getCost() == 1).filter(mv -> mv.getType() == preferType).toList();
         //Empty fallback
         if (filtered.isEmpty()) {
             moveSet.add(MoveLoader.getMoves().getFirst());

@@ -12,7 +12,6 @@ import it.unibo.abyssclimber.core.combat.CombatLog;
 import it.unibo.abyssclimber.core.combat.CombatMove;
 import it.unibo.abyssclimber.core.combat.CombatPresenter;
 import it.unibo.abyssclimber.core.combat.LogType;
-import it.unibo.abyssclimber.core.combat.MoveLoader.Move;
 import it.unibo.abyssclimber.model.Creature;
 import it.unibo.abyssclimber.model.Difficulty;
 import it.unibo.abyssclimber.model.Player;
@@ -145,7 +144,7 @@ public class CombatController  implements CombatPresenter{
     private void setMoveButton (Player player){
         for ( int i = 0; i < player.getSelectedMoves().size(); i++ ) {
             Button b = buttonList.get(i);
-            Move mv = player.getSelectedMoves().get(i);
+            CombatMove mv = player.getSelectedMoves().get(i);
             b.setText(mv.getName() + "\n" + "Power " + mv.getPower() + " | Accuracy " + mv.getAcc() + " | Cost " +mv.getCost());
             b.setUserData(mv);
             applyTipoStyle(b, mv.getElement());
